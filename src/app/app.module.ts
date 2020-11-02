@@ -9,20 +9,38 @@ import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { CurrentWeatherEffects } from './effects/current-weather.effects';
+import { CurrentWeatherComponent } from './current-weather/current-weather.component';
+import { CitySearchComponent } from './city-search/city-search.component';
+
+
+// import { metaReducers, reducers } from './reducers'
+// import { StoreDevtoolsModule } from '@ngrx/store-devtools'
+// import { environment } from '../environments/environment'
+import {FlexLayoutModule } from '@angular/flex-layout' 
+import {  reducers } from './reducers'
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CurrentWeatherComponent,
+    CitySearchComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([CurrentWeatherEffects]),
     FormsModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
+    // StoreModule.forRoot({}, {}),
+    // EffectsModule.forRoot([CurrentWeatherEffects]),
+    StoreModule.forRoot(reducers, {
+        // metaReducers,
+        runtimeChecks: { strictStateImmutability: true, strictActionImmutability: true },
+      }),
+    EffectsModule.forRoot([CurrentWeatherEffects]),
+    // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
 
   ],
   providers: [],

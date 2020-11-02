@@ -1,19 +1,42 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ICurrentWeather,ICurrentWeatherResponse } from './interfaces'
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ICurrentWeather,ICurrentWeatherResponse } from './interfaces';
 import { HttpClient } from "@angular/common/http";
 import { HttpParams, HttpHeaders } from "@angular/common/http";
-import { map } from 'rxjs/operators'
-import { environment } from '../environments/environment'
+import { map } from 'rxjs/operators';
+import { environment } from '../environments/environment';
+
+
+// for currentWeather$ subject way
+export const defaultWeather: ICurrentWeather = {
+    city: '--',
+    country: '--',
+    date: Date.now(),
+    image: '',
+    temperature: 0,
+    description: '',
+  }
+
+// interface show what the service do 
+export interface IWeatherService {
+    readonly currentWeather$: BehaviorSubject<ICurrentWeather>
+    getCurrentWeather(search: string, country?: string): Observable<ICurrentWeather>
+    updateCurrentWeather(search: string, country?: string): void
+  }
+
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class WeatherService {
+export class WeatherService implements IWeatherService{
+    // for  BehaviorSubject way
+    readonly currentWeather$ = new BehaviorSubject<ICurrentWeather>(defaultWeather)
+
+
     constructor(private httpClient: HttpClient) { }
 
-  public  getCurrentWeathersearchText(searchText: string, country?: string): Observable<ICurrentWeather> {
+  public  getCurrentWeather(searchText: string, country?: string): Observable<ICurrentWeather> {
       // other  headers  from the https://rapidapi.com/ example it seem they are oprinal cuse it work!! :)
       // .set("content-type","application/octet-stream")
       // .set("x-rapidapi-host","community-open-weather-map.p.rapidapi.com")
@@ -23,9 +46,15 @@ export class WeatherService {
         .set("x-rapidapi-key",environment.xRapidapiKey);
         return this.httpClient.get<ICurrentWeatherResponse>(`${environment.weatherApiBaseUrl}/weather`, { 'headers':headers, 'params':params })
         .pipe( map((data) => this.transformToICurrentWeather(data)))
-
-
     }
+
+
+    // for BehaviorSubject way
+    public updateCurrentWeather(search: string, country?: string): void {
+        this.getCurrentWeather(search, country).subscribe((weather) =>
+          this.currentWeather$.next(weather)
+        )
+      }
 
 
     private transformToICurrentWeather(data: ICurrentWeatherResponse): ICurrentWeather {
