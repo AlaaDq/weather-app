@@ -27,6 +27,7 @@ export class CitySearchComponent implements OnInit {
         filter(() => !this.search.invalid),
         tap((searchValue: string) => this.doSearch(searchValue))
       ).subscribe()
+      //tap will executed if filter line passed i gussed wiche will if validtion not invalid will return true
   }
 
   
