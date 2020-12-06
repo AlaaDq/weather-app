@@ -25,3 +25,22 @@
       <div fxFlex></div>
     </div>
   </div>
+
+
+
+
+
+ 
+  <div   fxLayout="row" fxLayoutAlign="center">
+    <h1 fxLayoutAlign="center">
+      qrcode githun repo
+    </h1>
+  </div>
+   
+  <ngx-qrcode 
+         fxLayoutAlign="center"
+        [elementType]="elementType" 
+        [value] = "value"
+        cssClass = "aclass"
+        [errorCorrectionLevel] = "correctionLevel">
+  </ngx-qrcode>

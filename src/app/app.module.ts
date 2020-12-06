@@ -11,6 +11,7 @@ import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { CurrentWeatherEffects } from './effects/current-weather.effects';
 import { CurrentWeatherComponent } from './current-weather/current-weather.component';
 import { CitySearchComponent } from './city-search/city-search.component';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 
 // import { metaReducers, reducers } from './reducers'
@@ -33,6 +34,8 @@ import {  reducers } from './reducers'
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    NgxQRCodeModule,
+
     // StoreModule.forRoot({}, {}),
     // EffectsModule.forRoot([CurrentWeatherEffects]),
     StoreModule.forRoot(reducers, {
